@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.mywebdisk.mapper">
+	<!-- select 속성은 3개 : id, resultType, parameterType -->
+	<select id="login" parameterType="com.hb.mywebdisk.VO" resultType="com.hb.mywebdisk.VO">
+		select * from hbmember where id=#{id} and pwd=#{pwd}
+	</select>
+	<insert id="insert" parameterType="com.hb.mywebdisk.VO">
+		insert into hbmember values(hbmember_seq.nextval,#{id},#{pwd},#{name},#{age},#{addr})
+	</insert>
+</mapper>

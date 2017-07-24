@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.mybbs.mapper">
+	<!-- select 속성은 3개 : id, resultType, parameterType -->
+	<!-- 전체 게시물 수 -->
+	<select id="totalcount" resultType="int">
+		select count(*) from board
+	</select>
+	<!-- 원글 리스트 -->
+	<select id="list" parameterType="Map" resultType="com.hb.mybbs.BoardVO">
+		select * from (
+			select rownum r_num, a.* from (
+				select * from board order by groups desc,lev asc,seq desc
+			) a
+		) where r_num between #{begin} and #{end}
+	</select>
+	<select id="onelist" parameterType="String" resultType="com.hb.mybbs.BoardVO">
+		select * from board where seq=#{seq}
+	</select>
+	<insert id="insert" parameterType="com.hb.mybbs.BoardVO">
+		insert into board values(
+			board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,
+			board_group.nextval,0,0,'BBS',sysdate,#{filename},#{ip})
+	</insert>
+	<!-- 댓글 삽입 전 lev 업데이트 -->
+	<!-- 원 글과 그룹은 같으면서 레벨이 같거나 크면 증가시킨다. -->
+	<update id="up_lev" parameterType="Map">
+		update board set lev=lev+1 where groups=#{groups} and lev>=#{lev}
+	</update>
+	<insert id="insertRewrite" parameterType="com.hb.mybbs.BoardVO">
+		insert into board values(
+			board_seq.nextval,#{writer},#{title},#{content},#{pwd},0,
+			#{groups},#{step},#{lev},'BBS',sysdate,#{filename},#{ip})
+	</insert>
+	<update id="hit" parameterType="com.hb.mybbs.BoardVO">
+		update board set hit=#{hit} where seq=#{seq}
+	</update>
+	<update id="modify" parameterType="com.hb.mybbs.BoardVO">
+		update board set title=#{title}, content=#{content}, filename=#{filename} where seq=#{seq}
+	</update>
+	<delete id="delete" parameterType="String">
+		delete from board where seq=#{seq}
+	</delete>
+</mapper>

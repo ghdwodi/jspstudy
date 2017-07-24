@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.myshopingmall.mapper">
+	<!-- select 속성은 3개 : id, resultType, parameterType -->
+	<select id="list" parameterType="String" resultType="com.hb.myshopingmall.ProductVO">
+		select * from shop_T where category=#{category}
+	</select>
+	<select id="onelist" parameterType="String" resultType="com.hb.myshopingmall.ProductVO">
+		select * from shop_T where num=#{prod_num}
+	</select>
+	<insert id="enroll" parameterType="com.hb.myshopingmall.ProductVO">
+		insert into shop_t values(shop_num.nextVal,#{category},#{p_num},
+			#{p_name},#{p_company},#{p_price},#{p_saleprice},#{p_image_s},
+			#{p_image_l},#{p_content},sysdate)
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="com.hb.myshopingmall.MemberVO"
+		resultType="com.hb.myshopingmall.MemberVO">
+		select * from shop_member where id=#{id} and pwd=#{pwd}
+	</select>
+	<select id="">
+	</select>
+	<insert id="join" parameterType="com.hb.myshopingmall.MemberVO">
+		insert into shop_member values(member_num.nextVal,#{id},#{pwd},
+		#{name},#{age},#{gender},#{email},#{photo},sysdate)
+	</insert>
+	<update id="update" parameterType="com.hb.myshopingmall.MemberVO">
+		update shop_member set name=#{name},age=#{age},gender=#{gender},photo=#{photo}
+		where memberidx=#{memberidx}
+	</update>
+	
+	<!-- 장바구니 -->
+	<select id="cartlist" parameterType="String" resultType="com.hb.myshopingmall.CartVO">
+		select * from shop_cart where memberidx=#{memberidx}
+	</select>
+	<insert id="addincart" parameterType="com.hb.myshopingmall.CartVO">
+		insert into shop_cart values(cart_num.nextVal,#{memberidx},#{num},1,sysdate)
+	</insert>
+	<update id="addproduct" parameterType="String">
+		update shop_cart set productnum=#{productnum} where cartidx=#{cartidx}
+	</update>
+</mapper>

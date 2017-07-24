@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<companys>
+	<company>
+		<name>한빛교육센터_신촌점</name>
+		<number>2006</number>
+		<address>신촌</address>
+	</company>
+	<company>
+		<name>한빛교육센터_강남점</name>
+		<number>2008</number>
+		<address>강남</address>
+	</company>
+	<company>
+		<name>한빛교육센터_종로점</name>
+		<number>2009</number>
+		<address>종로</address>
+	</company>
+</companys>

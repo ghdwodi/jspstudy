@@ -1,0 +1,40 @@
+Ajax(Asynchronous JavaScript and XML); 비동기 통신
+  - 서버와 클라이언트간의 속도를 맞출 필요가 없다.
+    (클라이언트가 서버에게 요청하고 응답할때까지 기다리지 않아도 된다.)
+  - 페이지 단위의 로드가 아니라, XML 파일 조각 단위으로 로드
+    즉 전체 페이지를 다시 로드 하지 않아도 페이지 일부를 동적으로 갱신
+    
+  1. jQuery.load(url, data, callback) 
+     : ajax기능으로 html 로드하고 DOM 방식으로 삽입 
+     url : 서버측 위치, data : 가져올 데이터, callback : 콜백함수
+     
+  2. jQuery.get(url,data,callback,type) : get방식으로 원격페이지로드     
+     jQuery.post(url, data, callback,type) : post방식으로 원격페이지로드 
+     
+  3. jQuery.getJSON() : get방식으로 json 데이터 로드
+     jQuery.getScript() : get방식으로 script 데이터 로드
+  
+  4. serialize() : from 요소에 전송할 데이터를 재가공(직렬화)
+                   => 'name1=value&name2=value'
+     serializeArray() :   
+       => key1 : value, key2 : value, key3 : value ...  JSON데이터로 전환
+       
+  5. ajaxComplete(function(){}) : ajax통신이 완료(성공)되면 함수에 실행하라
+       
+  6. jQuery.ajax(url, type, data, datatype);
+     url : 서버위치 (jsp)
+     data : 서버의 전송되는 데이터
+     dataType :  응답결과의 데이터 형태 (xml, html, json, text, script,...)
+     success : 성공한 경우
+     error : 실패한 경우
+     complete : 요청이 완료 되었을 때
+     contentType : 서버 전송시 문서 타입
+  
+  ///////////////////////////////////////////////////////////////////////
+  
+  웹상에서 정보를 전달하는 방법 : xml, json를 가장 많이 사용한다.
+  xml : 사용자가 태그를 직접 만들어서 사용하는 것
+   예) http://www.kma.go.kr/XML/weather/sfc_web_map.xml
+  json : key와 value (1:1)매칭   => http://json.org 
+   예) http://openapi.seoul.go.kr:8088/sample/json/SeoulLibraryTime/1/5/ 
+   json형식 : [{"키":"값","키":"값"}], [{"키":["값1","값2","값3"]}]

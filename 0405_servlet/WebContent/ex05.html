@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<style type="text/css">
+			fieldset {
+				width: 300px;
+			}
+		</style>
+		<script type="text/javascript">
+			function sendScore_go() {
+				if (document.f.name.value==""){
+					alert("이름을 입력하시오!");
+					document.f.name.focus();
+					return;
+				}
+				if (document.f.kor.value==""){
+					alert("국어점수를 입력하시오!");
+					document.f.kor.focus();
+					return;
+				} else {
+					if (document.f.kor.value<0 || document.f.kor.value>100) {
+						alert("점수가 잘못 입력되었습니다!");
+						document.f.kor.focus();
+						return;
+					}
+				}
+				if (document.f.eng.value==""){
+					alert("영어점수를 입력하시오!");
+					document.f.eng.focus();
+					return;
+				} else {
+					if (document.f.eng.value<0 || document.f.eng.value>100) {
+						alert("점수가 잘못 입력되었습니다!");
+						document.f.eng.focus();
+						return;
+					}
+				}
+				if (document.f.math.value==""){
+					alert("수학점수를 입력하시오!");
+					document.f.math.focus();
+					return;
+				} else {
+					if (document.f.math.value<0 || document.f.math.value>100){
+						alert("점수가 잘못 입력되었습니다!");
+						document.f.math.focus();
+						return;
+					}
+				}
+				// form의 내용을 원하는 곳으로 보낸다.
+				// 서블릿으로 보낼 때는 "/프로젝트이름/서블릿이름"
+				document.f.action="/0405_servlet/Ex05";
+				document.f.submit();
+			}
+		</script>
+	</head>
+	<body>
+		<form name="f">
+			<fieldset>
+				<legend>점수 입력</legend>
+				<p>이름 : <input type="text" name="name" /></p>
+				<p>국어 : <input type="number" name="kor" /></p>
+				<p>영어 : <input type="number" name="eng" /></p>
+				<p>수학 : <input type="number" name="math" /></p>
+				<input type="button" value="입력" onclick="sendScore_go()" />
+				<input type="reset" value="취소" />
+			</fieldset>
+		</form>
+	</body>
+</html>

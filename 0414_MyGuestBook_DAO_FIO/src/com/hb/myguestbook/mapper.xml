@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.myguestbook.mapper">
+	<!-- select 속성은 3개 : id, resultType, parameterType -->
+	<select id="list" resultType="com.hb.myguestbook.VO">
+		select * from guestbook2 order by idx
+	</select>
+	<select id="onelist" resultType="com.hb.myguestbook.VO" parameterType="String">
+		select * from guestbook2 where idx=#{idx}
+	</select>
+	<!-- insert,update,delete는 resultType이 없다.(무조건 int) -->
+	<insert id="insert" parameterType="com.hb.myguestbook.VO">
+		insert into guestbook2 values(guestbook_seq2.nextval,#{name},#{subject},#{content},#{email},#{pwd},#{filename},sysdate)
+	</insert>
+	<delete id="delete" parameterType="com.hb.myguestbook.VO">
+		delete from guestbook2 where idx=#{idx}
+	</delete>
+	<update id="update" parameterType="String">
+		update guestbook2 set name=#{name},subject=#{subject},content=#{content},email=#{email} where idx=#{idx}
+	</update>
+</mapper>

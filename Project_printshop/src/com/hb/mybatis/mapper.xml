@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.mybatis.mapper">
+	<!-- 고객 관련 -->
+	<select id="login" parameterType="com.hb.mybatis.Customer_VO" resultType="com.hb.mybatis.Customer_VO">
+		select * from customer_T where c_id=#{c_id} and c_pw=#{c_pw}
+	</select>
+	<select id="onelist" parameterType="String" resultType="com.hb.mybatis.Customer_VO">
+		select * from customer_T where c_idx=#{c_idx}
+	</select>
+	<select id="idcheck" parameterType="String" resultType="com.hb.mybatis.Customer_VO">
+		select * from customer_T where c_id=#{c_id}
+	</select>
+	<insert id="join" parameterType="com.hb.mybatis.Customer_VO">
+		insert into customer_T values(customer_seq.nextval,#{c_id},#{c_pw},#{c_name},#{c_email},#{c_addrnum},#{c_addr1},#{c_addr2},sysdate) 
+	</insert>
+	<update id="modify" parameterType="com.hb.mybatis.Customer_VO">
+		update customer_T set c_pw=#{c_pw},c_name=#{c_name},c_email=#{c_email},c_addrnum=#{c_addrnum},c_addr1=#{c_addr1},c_addr2=#{c_addr2}
+		where c_idx=#{c_idx}
+	</update>
+	
+	<!-- 게시판 관련 -->
+	<!-- 총 게시물 수 -->
+	<select id="totalcount" parameterType="String" resultType="int">
+		select count(*) from bbs_t where b_category=#{b_category}
+	</select>
+	<!-- 게시물 목록 -->
+	<select id="bbslist" parameterType="Map" resultType="com.hb.mybatis.BBS_VO">
+		select * from (
+			select rownum r_num, a.* from (
+				select * from bbs_t where b_category=#{b_category} order by groups desc,lev asc,b_idx desc
+			) a
+		) where r_num between #{begin} and #{end}
+	</select>
+	<!-- 게시물목록 헤더 -->
+	<select id="bbshead" parameterType="String" resultType="com.hb.mybatis.BBS_VO">
+		select * from (
+			select * from bbs_t where b_category=#{b_category} order by groups desc,lev asc,b_idx desc
+		)where rownum &lt; 7
+	</select>
+	<!-- 게시물 열람 -->
+	<select id="onebbslist" parameterType="String" resultType="com.hb.mybatis.BBS_VO">
+		select * from bbs_t where b_idx=#{b_idx}
+	</select>
+	<!-- 글쓴이 찾기 -->
+	<select id="writer" parameterType="String" resultType="String">
+		select c_name from customer_T where c_idx=#{c_idx}
+	</select>
+	<!-- 히트수 업데이트 -->
+	<update id="hit" parameterType="com.hb.mybatis.BBS_VO">
+		update bbs_t set hit=#{hit} where b_idx=#{b_idx}
+	</update>
+	<!-- 글쓰기 -->
+	<insert id="write" parameterType="com.hb.mybatis.BBS_VO">
+		insert into bbs_t values(bbs_seq.nextval,#{title},'1111',0,group_seq.nextval,0,0,#{content},#{c_idx},sysdate,#{b_category})
+	</insert>
+	<!-- 댓글 삽입 전 lev 업데이트 -->
+	<!-- 원 글과 그룹은 같으면서 레벨이 같거나 크면 증가시킨다. -->
+	<update id="up_lev" parameterType="Map">
+		update bbs_t set lev=lev+1 where groups=#{groups} and lev>=#{lev}
+	</update>
+	<insert id="insertreply" parameterType="com.hb.mybatis.BBS_VO">
+		insert into bbs_t values(bbs_seq.nextval,#{title},'1111',0,#{groups},#{step},#{lev},#{content},#{c_idx},sysdate,#{b_category})
+	</insert>
+	<update id="bbsmodify" parameterType="com.hb.mybatis.BBS_VO">
+		update bbs_t set title=#{title},content=#{content} where b_idx=#{b_idx}
+	</update>
+	<delete id="bbsdelete" parameterType="String">
+		delete from bbs_t where b_idx=#{b_idx}
+	</delete>
+	
+	<!-- 주문 관련 -->
+	<insert id="order" parameterType="com.hb.mybatis.Order_VO">
+		insert into order_T values(order_seq.nextval,#{c_idx},#{pf_idx},
+		#{copy_num},#{page_num},#{pt_idx},#{ip_idx},#{inner_paper_num},
+		#{cover_idx},#{bind_idx},#{price},sysdate,#{addrnum},#{addr1},
+		#{addr2},#{o_name},#{o_rmks})
+	</insert>
+	<delete id="deleteorder" parameterType="String">
+		delete from order_t where o_idx=#{o_idx}
+	</delete>
+	<select id="orderlist" parameterType="String" resultType="com.hb.mybatis.Order_VO">
+		select * from order_T where c_idx=#{c_idx} order by o_idx desc
+	</select>
+	<select id="orderinfo" parameterType="String" resultType="com.hb.mybatis.Order_VO">
+		select * from order_T where o_idx=#{o_idx}
+	</select>
+	<select id="pflist" resultType="com.hb.mybatis.PF_VO">
+		select * from paperform order by pf_idx
+	</select>
+	<select id="ptlist" resultType="com.hb.mybatis.PT_VO">
+		select * from printing order by pt_idx
+	</select>
+	<select id="iplist" resultType="com.hb.mybatis.IP_VO">
+		select * from innerpaper order by ip_idx
+	</select>
+	<select id="coverlist" resultType="com.hb.mybatis.Cover_VO">
+		select * from cover order by cover_idx
+	</select>
+	<select id="bindlist" resultType="com.hb.mybatis.Bind_VO">
+		select * from bind order by bind_idx
+	</select>
+	<select id="pfprice" parameterType="String" resultType="com.hb.mybatis.PF_VO">
+		select * from paperform where pf_idx=#{pf_idx}
+	</select>
+	<select id="ptprice" parameterType="String" resultType="com.hb.mybatis.PT_VO">
+		select * from printing where pt_idx=#{pt_idx}
+	</select>
+	<select id="ipprice" parameterType="String" resultType="com.hb.mybatis.IP_VO">
+		select * from innerpaper where ip_idx=#{ip_idx}
+	</select>
+	<select id="coverprice" parameterType="String" resultType="com.hb.mybatis.Cover_VO">
+		select * from cover where cover_idx=#{cover_idx}
+	</select>
+	<select id="bindprice" parameterType="String" resultType="com.hb.mybatis.Bind_VO">
+		select * from bind where bind_idx=#{bind_idx}
+	</select>
+</mapper>

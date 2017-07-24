@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<script type="text/javascript">
+			function sendRes_go() {
+				if (document.f.su1.value==""){
+					alert("숫자를 입력해 주십시오.");
+					document.f.su1.focus();
+					return;
+				}
+				if (document.f.sel.value=="none"){
+					alert("연산자를 선택해 주십시오.");
+					document.f.su2.focus();
+					return;
+				}
+				if (document.f.su2.value==""){
+					alert("숫자를 입력해 주십시오.");
+					document.f.su2.focus();
+					return;
+				}
+				if (document.f.su2.value==0 && document.f.sel.value=="÷"){
+					alert("0으로 나눌 수 없습니다.");
+					return;
+				}
+				
+				document.f.action="/0405_servlet/Ex06";
+				document.f.submit();
+			}
+		</script>
+	</head>
+	<body>
+		<form name="f">
+			<div>
+				<p>수1 : <input type="number" name="su1" />
+				<select name="sel">
+					<option value="none">선택하세요</option>
+					<option value="+">+</option>
+					<option value="-">-</option>
+					<option value="×">×</option>
+					<option value="÷">÷</option>
+				</select>
+				수2 : <input type="number" name="su2" />
+				<input type="button" value="결과보기" onclick="sendRes_go()" />
+				</p>
+			</div>
+		</form>
+	</body>
+</html>

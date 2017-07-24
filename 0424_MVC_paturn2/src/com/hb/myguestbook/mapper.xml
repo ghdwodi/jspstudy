@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hb.myguestbook.mapper">
+	<select id="list" resultType="com.hb.myguestbook.VO">
+		select * from employees order by employee_id
+	</select>
+	<select id="dept" parameterType="String" resultType="com.hb.myguestbook.VO">
+		select * from employees where department_id=#{department_id}
+	</select>
+	<select id="keylist" parameterType="Map" resultType="com.hb.myguestbook.VO">
+		select * from employees where
+		<choose>
+			<when test="idx==0">Lower(employee_id)=#{keyword}</when>
+			<when test="idx==1">Lower(first_name) like '%' || #{keyword} || '%'</when>
+			<when test="idx==2">Lower(job_id) like '%' || #{keyword} || '%'</when>
+			<when test="idx==3">Lower(department_id)=#{keyword}</when>
+		</choose>
+	</select>
+</mapper>
